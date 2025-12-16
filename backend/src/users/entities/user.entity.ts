@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
 
 @Entity()
@@ -19,7 +19,7 @@ export class User{
     @CreateDateColumn()
     createdAt: Date;
 
-    @CreateDateColumn()
+    @UpdateDateColumn()
     updatedAt: Date;
 
     @BeforeInsert()
