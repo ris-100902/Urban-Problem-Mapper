@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import { IssueService } from "./issue.service";
 import { CreateIssueDto } from "./dto/create-issue.dto";
 import { UpdateIssueDto } from "./dto/update-issue.dto";
+import { AuthorizationGuard } from "src/auth/auth.guard";
 
 @Controller('issues')
+@UseGuards(AuthorizationGuard)
 export class IssueController{
     constructor(private issueService: IssueService) {}
 
@@ -18,8 +20,8 @@ export class IssueController{
     }
 
     @Post()
-    createOne(@Body() createIssueDto: CreateIssueDto){
-        return this.issueService.createOne(createIssueDto);
+    createOne(@Req() req, @Body() createIssueDto: CreateIssueDto){
+        return this.issueService.createOne(createIssueDto, req.user.sub);
     }
 
     @Delete(':id')

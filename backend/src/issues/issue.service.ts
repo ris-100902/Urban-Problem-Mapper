@@ -4,6 +4,7 @@ import { Issue } from "./entities/issue.entity";
 import { Repository } from "typeorm";
 import { CreateIssueDto } from "./dto/create-issue.dto";
 import { UpdateIssueDto } from "./dto/update-issue.dto";
+import { User } from "src/users/entities/user.entity";
 
 @Injectable()
 export class IssueService{
@@ -26,8 +27,8 @@ export class IssueService{
         return issue;
     }
 
-    async createOne(createIssueDto: CreateIssueDto): Promise<Issue>{
-        const newIssue = this.issueRepository.create(createIssueDto);
+    async createOne(createIssueDto: CreateIssueDto, user: User): Promise<Issue>{
+        const newIssue = this.issueRepository.create({...createIssueDto, createdBy: user});
         await this.issueRepository.save(newIssue);
         return newIssue;
     }

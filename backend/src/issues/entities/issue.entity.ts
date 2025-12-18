@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Issue{
@@ -25,4 +26,7 @@ export class Issue{
 
     @Column({default: "Open"})
     status: string = "Open";
+
+    @ManyToOne(type => User, user => user.issues, {onDelete: 'CASCADE', eager: true, nullable: false})
+    createdBy: User;
 }
