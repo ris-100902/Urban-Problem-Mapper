@@ -22,4 +22,7 @@ export class Issue{
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @Column({default: "Open"})
+    status: string = "Open";
 }
