@@ -3,9 +3,12 @@ import { IssueService } from "./issue.service";
 import { CreateIssueDto } from "./dto/create-issue.dto";
 import { UpdateIssueDto } from "./dto/update-issue.dto";
 import { AuthorizationGuard } from "src/auth/auth.guard";
+import { RolesGuard } from "src/roles/roles.guard";
+import { Roles } from "src/roles/roles.decorator";
+import { Role } from "src/roles/roles.enum";
 
 @Controller('issues')
-@UseGuards(AuthorizationGuard)
+@UseGuards(AuthorizationGuard, RolesGuard)
 export class IssueController{
     constructor(private issueService: IssueService) {}
 
@@ -25,11 +28,13 @@ export class IssueController{
     }
 
     @Delete(':id')
+    @Roles(Role.Admin)
     deleteOne(@Param('id') id: string){
         return this.issueService.deleteOne(+id);
     }
 
     @Patch(':id')
+    @Roles(Role.Admin)
     updateOne(@Param('id') id: string, @Body() updateIssueDto: UpdateIssueDto){
         return this.issueService.updateOne(+id, updateIssueDto);
     }
