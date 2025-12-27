@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Issue } from "./entities/issue.entity";
 import { Repository } from "typeorm";
@@ -18,12 +18,15 @@ export class IssueService{
         return await this.issueRepository.findOneBy({id});
     }
 
-    async deleteOne(id: number): Promise<Issue|null>{
+    async deleteOne(req, id: number): Promise<Issue|null>{
         const issue = await this.issueRepository.findOneBy({id});
         if (!issue){
             throw new NotFoundException("No such issue exists");
         }
-        await this.issueRepository.delete(issue);
+        if (issue.createdBy.id!=req.user.sub && req.user.role!="admin"){
+            throw new ForbiddenException("Inadequate Permissions");
+        }
+        await this.issueRepository.delete(id);
         return issue;
     }
 

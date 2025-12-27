@@ -28,9 +28,8 @@ export class IssueController{
     }
 
     @Delete(':id')
-    @Roles(Role.Admin)
-    deleteOne(@Param('id') id: string){
-        return this.issueService.deleteOne(+id);
+    deleteOne(@Req() req, @Param('id') id: string){
+        return this.issueService.deleteOne(req, +id);
     }
 
     @Patch(':id')
