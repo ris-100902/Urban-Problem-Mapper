@@ -1,6 +1,5 @@
-import React from "react";
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router";
 
 const ResidentSignUp = (() => {
@@ -12,7 +11,7 @@ const ResidentSignUp = (() => {
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:3000/users", {name, email, password}   );
+            await axios.post("http://localhost:3000/users", {name, email, password}   );
             navigate("/login");
         } catch(error: any) {
             if (error.response) {
